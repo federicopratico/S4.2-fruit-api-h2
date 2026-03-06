@@ -9,8 +9,12 @@ import java.util.Optional;
 @org.springframework.stereotype.Repository
 public interface FruitRepository extends Repository<Fruit, Long> {
     Fruit save(Fruit fruit);
+
     Fruit update(Fruit fruit);
+
     void delete(long id);
+
     List<Fruit> findAll();
+
     Optional<Fruit> findFruitById(Long id);
 }
