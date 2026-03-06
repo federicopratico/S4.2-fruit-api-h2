@@ -4,15 +4,17 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
 
 
-@Data
+@EqualsAndHashCode
 public class Fruit {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+    @Getter private Long id;
 
-    private String name;
+    @Getter private String name;
 
-    private int weightInKilos;
+    @Getter private int weightInKilos;
 }
