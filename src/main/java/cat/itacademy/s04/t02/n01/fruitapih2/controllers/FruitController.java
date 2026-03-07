@@ -6,7 +6,6 @@ import cat.itacademy.s04.t02.n01.fruitapih2.DTOs.UpdateFruitDTO;
 import cat.itacademy.s04.t02.n01.fruitapih2.services.FruitService;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
