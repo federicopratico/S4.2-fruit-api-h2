@@ -4,6 +4,9 @@ import cat.itacademy.s04.t02.n01.fruitapih2.DTOs.CreateFruitDTO;
 import cat.itacademy.s04.t02.n01.fruitapih2.DTOs.ResponseFruitDTO;
 import cat.itacademy.s04.t02.n01.fruitapih2.DTOs.UpdateFruitDTO;
 import cat.itacademy.s04.t02.n01.fruitapih2.services.FruitService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,26 +21,31 @@ public class FruitController {
     }
 
     @PostMapping("/fruits")
-    public ResponseFruitDTO add(@RequestBody CreateFruitDTO createFruitDTO) {
-        return null;
+    public ResponseEntity<ResponseFruitDTO> addFruit(@Validated @RequestBody CreateFruitDTO createFruitDTO) {
+
+        ResponseFruitDTO response = fruitService.createFruit(createFruitDTO);
+
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(response);
     }
 
     @DeleteMapping("/fruits/{id}")
-    public void delete(@PathVariable long id) {
+    public void deleteFruit(@PathVariable long id) {
     }
 
     @GetMapping("/fruits")
-    public List<ResponseFruitDTO> getAll() {
+    public List<ResponseFruitDTO> getAllFruits() {
         return null;
     }
 
     @GetMapping("/fruits/{id}")
-    public ResponseFruitDTO getById(@PathVariable long id) {
+    public ResponseFruitDTO getFruitById(@PathVariable long id) {
         return null;
     }
 
     @PutMapping("/fruits/{id}")
-    public ResponseFruitDTO update(@PathVariable long id, @RequestBody UpdateFruitDTO updateFruitDTO) {
+    public ResponseFruitDTO updateFruit(@PathVariable long id, @RequestBody UpdateFruitDTO updateFruitDTO) {
         return null;
     }
 }
