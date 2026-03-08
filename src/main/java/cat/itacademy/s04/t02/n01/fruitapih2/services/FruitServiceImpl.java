@@ -6,7 +6,6 @@ import cat.itacademy.s04.t02.n01.fruitapih2.DTOs.UpdateFruitDTO;
 import cat.itacademy.s04.t02.n01.fruitapih2.model.Fruit;
 import cat.itacademy.s04.t02.n01.fruitapih2.repository.FruitRepository;
 import org.springframework.stereotype.Service;
-import tools.jackson.databind.ObjectMapper;
 
 import java.util.List;
 
