@@ -1,4 +1,4 @@
-package cat.itacademy.s04.t02.n01.fruitapih2.exceptions;
+package cat.itacademy.s04.t02.n01.fruitapih2.exception;
 
 import cat.itacademy.s04.t02.n01.fruitapih2.DTOs.ErrorResponse;
 import org.springframework.http.HttpStatus;
