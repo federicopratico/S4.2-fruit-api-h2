@@ -29,10 +29,7 @@ public class FruitServiceImpl implements FruitService {
 
         Fruit createdFruit = fruitRepository.save(newFruit);
 
-        return new ResponseFruitDTO(
-                createdFruit.getId(),
-                createdFruit.getName(),
-                createdFruit.getWeightInKilos());
+        return FruitMapper.toFruitDTO(createdFruit);
     }
 
     @Override
