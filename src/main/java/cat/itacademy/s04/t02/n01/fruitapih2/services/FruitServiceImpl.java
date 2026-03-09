@@ -5,6 +5,7 @@ import cat.itacademy.s04.t02.n01.fruitapih2.DTOs.ResponseFruitDTO;
 import cat.itacademy.s04.t02.n01.fruitapih2.DTOs.UpdateFruitDTO;
 import cat.itacademy.s04.t02.n01.fruitapih2.model.Fruit;
 import cat.itacademy.s04.t02.n01.fruitapih2.repository.FruitRepository;
+import cat.itacademy.s04.t02.n01.fruitapih2.utils.FruitMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -35,18 +36,21 @@ public class FruitServiceImpl implements FruitService {
     }
 
     @Override
-    public ResponseFruitDTO update(UpdateFruitDTO updateFruitDTO) {
+    public ResponseFruitDTO updateFruit(UpdateFruitDTO updateFruitDTO) {
         return null;
     }
 
     @Override
-    public void delete(long id) {
+    public void deleteFruit(long id) {
 
     }
 
     @Override
-    public List<ResponseFruitDTO> findAll() {
-        return List.of();
+    public List<ResponseFruitDTO> findAllFruits() {
+        return fruitRepository.findAll()
+                .stream()
+                .map(FruitMapper::toFruitDTO)
+                .toList();
     }
 
     @Override
