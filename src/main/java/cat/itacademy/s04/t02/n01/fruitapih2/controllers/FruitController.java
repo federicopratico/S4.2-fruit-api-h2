@@ -36,8 +36,13 @@ public class FruitController {
     }
 
     @GetMapping()
-    public List<ResponseFruitDTO> getAllFruits() {
-        return null;
+    public ResponseEntity<List<ResponseFruitDTO>> getAllFruits() {
+
+        List<ResponseFruitDTO> response = fruitService.findAllFruits();
+
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(response);
     }
 
     @GetMapping("/{id}")
