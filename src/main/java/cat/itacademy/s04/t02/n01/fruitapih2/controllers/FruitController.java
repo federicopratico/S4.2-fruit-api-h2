@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@RequestMapping("/fruits")
 public class FruitController {
 
     private final FruitService fruitService;
@@ -20,7 +21,7 @@ public class FruitController {
         this.fruitService = fruitService;
     }
 
-    @PostMapping("/fruits")
+    @PostMapping()
     public ResponseEntity<ResponseFruitDTO> addFruit(@Validated @RequestBody CreateFruitDTO createFruitDTO) {
 
         ResponseFruitDTO response = fruitService.createFruit(createFruitDTO);
@@ -30,21 +31,21 @@ public class FruitController {
                 .body(response);
     }
 
-    @DeleteMapping("/fruits/{id}")
+    @DeleteMapping("/{id}")
     public void deleteFruit(@PathVariable long id) {
     }
 
-    @GetMapping("/fruits")
+    @GetMapping()
     public List<ResponseFruitDTO> getAllFruits() {
         return null;
     }
 
-    @GetMapping("/fruits/{id}")
+    @GetMapping("/{id}")
     public ResponseFruitDTO getFruitById(@PathVariable long id) {
         return null;
     }
 
-    @PutMapping("/fruits/{id}")
+    @PutMapping("/{id}")
     public ResponseFruitDTO updateFruit(@PathVariable long id, @RequestBody UpdateFruitDTO updateFruitDTO) {
         return null;
     }
