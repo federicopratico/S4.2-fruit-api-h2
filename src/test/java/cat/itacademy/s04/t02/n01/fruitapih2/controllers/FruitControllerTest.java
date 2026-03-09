@@ -6,13 +6,17 @@ import cat.itacademy.s04.t02.n01.fruitapih2.services.FruitService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 import tools.jackson.databind.ObjectMapper;
 
+import java.util.List;
+
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -81,5 +85,38 @@ class FruitControllerTest {
 
 
         verify(fruitService, never()).createFruit(any());
+    }
+
+    @Test
+    void getAllFruits_whenThereAreFruits_shouldReturn200andAListOfResponseFruitDTO() throws Exception {
+
+        List<ResponseFruitDTO> output = List.of(
+                new ResponseFruitDTO(1L, "Apple", 2),
+                new ResponseFruitDTO(2L, "Banana", 1)
+        );
+
+        when(fruitService.findAllFruits()).thenReturn(output);
+
+        mockMvc.perform(get("/fruits"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$").isArray())
+                .andExpect(jsonPath("$.length()").value(2))
+                .andExpect(jsonPath("$[0].id").value(1))
+                .andExpect(jsonPath("$[0].name").value("Apple"))
+                .andExpect(jsonPath("$[1].id").value(2))
+                .andExpect(jsonPath("$[1].name").value("Banana"));
+
+    }
+
+    @Test
+    void getAllFruits_whenThereAreNoFruits_shouldReturn404andTheEmptyList() throws Exception {
+
+        when(fruitService.findAllFruits()).thenReturn(List.of());
+
+        // ACT + ASSERT
+        mockMvc.perform(get("/fruits"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$").isArray())
+                .andExpect(jsonPath("$.length()").value(0));
     }
 }
