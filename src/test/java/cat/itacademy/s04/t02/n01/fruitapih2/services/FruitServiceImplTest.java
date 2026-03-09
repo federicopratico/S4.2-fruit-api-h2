@@ -73,7 +73,7 @@ class FruitServiceImplTest {
     }
 
     @Test
-    void findAllFruits_whenIsEmpty_shouldReturnTheEmptyList() {
+    void findAllFruits_whenDBIsEmpty_shouldReturnTheEmptyList() {
 
         when(fruitRepository.findAll()).thenReturn(List.of());
 
