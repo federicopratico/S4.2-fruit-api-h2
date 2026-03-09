@@ -10,8 +10,9 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -42,5 +43,45 @@ class FruitServiceImplTest {
         assertEquals(input.weightInKilos(), result.weightInKilos());
 
         verify(fruitRepository).save(any(Fruit.class));
+    }
+
+    @Test
+    void findAllFruits_whenDBisNotEmpty_shouldReturnListOfResponseFruitDTO() {
+        Fruit apple = new Fruit(1L, "Apple", 1);
+        Fruit peach = new Fruit(2L, "Peach", 2);
+
+        List<Fruit> fruitList = List.of(apple, peach);
+
+        when(fruitRepository.findAll()).thenReturn(fruitList);
+
+        List<ResponseFruitDTO> result = fruitService.findAllFruits();
+
+        assertFalse(result.isEmpty());
+        assertEquals(2, result.size());
+
+        ResponseFruitDTO first = result.getFirst();
+        assertEquals(1L, first.id());
+        assertEquals("Apple", first.name());
+        assertEquals(1, first.weightInKilos());
+
+        ResponseFruitDTO second = result.get(1);
+        assertEquals(2L, second.id());
+        assertEquals("Peach", second.name());
+        assertEquals(2, second.weightInKilos());
+
+        verify(fruitRepository).findAll();
+    }
+
+    @Test
+    void findAllFruits_whenIsEmpty_shouldReturnTheEmptyList() {
+
+        when(fruitRepository.findAll()).thenReturn(List.of());
+
+        List<ResponseFruitDTO> result = fruitService.findAllFruits();
+
+        assertTrue(result.isEmpty());
+        assertEquals(0, result.size());
+
+        verify(fruitRepository).findAll();
     }
 }
