@@ -9,11 +9,11 @@ import java.util.List;
 public interface FruitService {
     ResponseFruitDTO createFruit(CreateFruitDTO createFruitDTO);
 
-    ResponseFruitDTO update(UpdateFruitDTO updateFruitDTO);
+    ResponseFruitDTO updateFruit(UpdateFruitDTO updateFruitDTO);
 
-    void delete(long id);
+    void deleteFruit(long id);
 
-    List<ResponseFruitDTO> findAll();
+    List<ResponseFruitDTO> findAllFruits();
 
     ResponseFruitDTO findFruitById(Long id);
 }
