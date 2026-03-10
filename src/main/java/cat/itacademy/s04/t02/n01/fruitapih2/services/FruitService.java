@@ -13,7 +13,7 @@ public interface FruitService {
 
     void deleteFruit(long id);
 
-    List<ResponseFruitDTO> findAllFruits();
+    List<ResponseFruitDTO> getAllFruits();
 
-    ResponseFruitDTO findFruitById(Long id);
+    ResponseFruitDTO getFruitById(Long id);
 }

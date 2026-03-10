@@ -6,7 +6,6 @@ import cat.itacademy.s04.t02.n01.fruitapih2.services.FruitService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
@@ -95,7 +94,7 @@ class FruitControllerTest {
                 new ResponseFruitDTO(2L, "Banana", 1)
         );
 
-        when(fruitService.findAllFruits()).thenReturn(output);
+        when(fruitService.getAllFruits()).thenReturn(output);
 
         mockMvc.perform(get("/fruits"))
                 .andExpect(status().isOk())
@@ -111,7 +110,7 @@ class FruitControllerTest {
     @Test
     void getAllFruits_whenThereAreNoFruits_shouldReturn404andTheEmptyList() throws Exception {
 
-        when(fruitService.findAllFruits()).thenReturn(List.of());
+        when(fruitService.getAllFruits()).thenReturn(List.of());
 
         // ACT + ASSERT
         mockMvc.perform(get("/fruits"))

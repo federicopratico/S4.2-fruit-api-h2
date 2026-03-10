@@ -43,7 +43,7 @@ public class FruitServiceImpl implements FruitService {
     }
 
     @Override
-    public List<ResponseFruitDTO> findAllFruits() {
+    public List<ResponseFruitDTO> getAllFruits() {
         return fruitRepository.findAll()
                 .stream()
                 .map(FruitMapper::toFruitDTO)
@@ -51,7 +51,7 @@ public class FruitServiceImpl implements FruitService {
     }
 
     @Override
-    public ResponseFruitDTO findFruitById(Long id) {
+    public ResponseFruitDTO getFruitById(Long id) {
         return null;
     }
 }

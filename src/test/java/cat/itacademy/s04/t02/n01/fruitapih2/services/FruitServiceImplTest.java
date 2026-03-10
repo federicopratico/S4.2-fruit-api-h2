@@ -46,7 +46,7 @@ class FruitServiceImplTest {
     }
 
     @Test
-    void findAllFruits_whenDBisNotEmpty_shouldReturnListOfResponseFruitDTO() {
+    void getAllFruits_whenDBisNotEmpty_shouldReturnListOfResponseFruitDTO() {
         Fruit apple = new Fruit(1L, "Apple", 1);
         Fruit peach = new Fruit(2L, "Peach", 2);
 
@@ -54,7 +54,7 @@ class FruitServiceImplTest {
 
         when(fruitRepository.findAll()).thenReturn(fruitList);
 
-        List<ResponseFruitDTO> result = fruitService.findAllFruits();
+        List<ResponseFruitDTO> result = fruitService.getAllFruits();
 
         assertFalse(result.isEmpty());
         assertEquals(2, result.size());
@@ -73,15 +73,17 @@ class FruitServiceImplTest {
     }
 
     @Test
-    void findAllFruits_whenDBIsEmpty_shouldReturnTheEmptyList() {
+    void getAllFruits_whenDBIsEmpty_shouldReturnTheEmptyList() {
 
         when(fruitRepository.findAll()).thenReturn(List.of());
 
-        List<ResponseFruitDTO> result = fruitService.findAllFruits();
+        List<ResponseFruitDTO> result = fruitService.getAllFruits();
 
         assertTrue(result.isEmpty());
         assertEquals(0, result.size());
 
         verify(fruitRepository).findAll();
     }
+
+
 }
