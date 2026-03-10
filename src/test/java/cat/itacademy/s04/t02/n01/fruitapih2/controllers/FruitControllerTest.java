@@ -38,10 +38,10 @@ class FruitControllerTest {
     void  addFruit_validInput_shouldReturnCreatedFruitAnd201() throws Exception {
         ResponseFruitDTO response = new ResponseFruitDTO(1L, "Watermelon", 4);
 
-        when(fruitService.createFruit(any(CreateFruitDTO.class)))
+        when(fruitService.createFruit(any(RequestFruitDTO.class)))
                 .thenReturn(response);
 
-        String jsonBody = objectMapper.writeValueAsString(new CreateFruitDTO("Watermelon", 4));
+        String jsonBody = objectMapper.writeValueAsString(new RequestFruitDTO("Watermelon", 4));
 
         mockMvc.perform(post("/fruits")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -55,7 +55,7 @@ class FruitControllerTest {
     @Test
     void addFruit_invalidName_shouldThrowInvalidInputException() throws Exception {
 
-        CreateFruitDTO invalidInput = new CreateFruitDTO(" ", 4);
+        RequestFruitDTO invalidInput = new RequestFruitDTO(" ", 4);
         String jsonBody = objectMapper.writeValueAsString(invalidInput);
 
         mockMvc.perform(post("/fruits")
@@ -73,7 +73,7 @@ class FruitControllerTest {
     @Test
     void addFruit_invalidWeight_shouldThrowInvalidInputException() throws Exception {
 
-        CreateFruitDTO invalidInput = new CreateFruitDTO("Apple", -3);
+        RequestFruitDTO invalidInput = new RequestFruitDTO("Apple", -3);
         String jsonBody = objectMapper.writeValueAsString(invalidInput);
 
         mockMvc.perform(post("/fruits")

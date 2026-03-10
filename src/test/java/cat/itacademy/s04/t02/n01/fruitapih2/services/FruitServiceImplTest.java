@@ -1,6 +1,6 @@
 package cat.itacademy.s04.t02.n01.fruitapih2.services;
 
-import cat.itacademy.s04.t02.n01.fruitapih2.DTOs.CreateFruitDTO;
+import cat.itacademy.s04.t02.n01.fruitapih2.DTOs.RequestFruitDTO;
 import cat.itacademy.s04.t02.n01.fruitapih2.DTOs.ResponseFruitDTO;
 import cat.itacademy.s04.t02.n01.fruitapih2.exception.ResourceNotFoundException;
 import cat.itacademy.s04.t02.n01.fruitapih2.model.Fruit;
@@ -16,8 +16,7 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 
 @ExtendWith(MockitoExtension.class)
@@ -31,7 +30,7 @@ class FruitServiceImplTest {
 
     @Test
     void createFruit_shouldReturnResponseFruitDTO() {
-        CreateFruitDTO input = new CreateFruitDTO("Apple", 2);
+        RequestFruitDTO input = new RequestFruitDTO("Apple", 2);
 
         when(fruitRepository.save(any(Fruit.class)))
                 .thenReturn(new Fruit(1L, "Apple", 2));
@@ -107,9 +106,43 @@ class FruitServiceImplTest {
     @Test
     void getFruitById_whenIdDoesNotExists_shouldThrowResourceNotFoundException() {
         long id = 1L;
-        when(fruitRepository.findById(1L)).thenReturn(Optional.empty());
+        when(fruitRepository.findById(id)).thenReturn(Optional.empty());
 
         assertThrows(ResourceNotFoundException.class, () -> fruitService.getFruitById(id));
         verify(fruitRepository).findById(id);
+    }
+
+    @Test
+    void updateFruit_whenIdExists_shouldReturnUpdatedFruit() {
+        long id = 1L;
+        RequestFruitDTO input = new RequestFruitDTO("Banana", 1);
+
+        Fruit existentFruit = new Fruit(1L, "Banan", 4);
+        Fruit updatedFruit = new Fruit(1L, "Banana", 1);
+
+        when(fruitRepository.findById(id)).thenReturn(Optional.of(existentFruit));
+        when(fruitRepository.save(any(Fruit.class))).thenReturn(updatedFruit);
+
+        ResponseFruitDTO result = fruitService.updateFruit(id, input);
+
+        assertNotNull(result);
+        assertEquals(id, updatedFruit.getId());
+        assertEquals(input.name(), updatedFruit.getName());
+        assertEquals(input.weightInKilos(), updatedFruit.getWeightInKilos());
+
+        verify(fruitRepository).findById(id);
+        verify(fruitRepository).save(any(Fruit.class));
+    }
+
+    @Test
+    void updateFruit_whenIdDoesNotExist_shouldThrowResourceNotFoundException() {
+        long id = 1L;
+
+        when(fruitRepository.findById(id)).thenReturn(Optional.empty());
+
+        assertThrows(ResourceNotFoundException.class, () -> fruitService.updateFruit(id, any(RequestFruitDTO.class)));
+
+        verify(fruitRepository).findById(id);
+        verify(fruitRepository, never()).save(any(Fruit.class));
     }
 }
