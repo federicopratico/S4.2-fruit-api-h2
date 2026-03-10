@@ -105,7 +105,7 @@ class FruitServiceImplTest {
     }
 
     @Test
-    void getFruitById_whenIdDoNotExists_shouldThrowFruitNotFoundException() {
+    void getFruitById_whenIdDoesNotExists_shouldThrowFruitNotFoundException() {
         Long id = 1L;
         when(fruitRepository.findById(1L)).thenReturn(Optional.empty());
 
