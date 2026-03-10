@@ -116,7 +116,7 @@ class FruitControllerTest {
 
         // ACT + ASSERT
         mockMvc.perform(get("/fruits"))
-                .andExpect(status().isNoContent())
+                .andExpect(status().isOk())
                 .andExpect(jsonPath("$").isArray())
                 .andExpect(jsonPath("$.length()").value(0));
     }
