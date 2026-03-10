@@ -42,12 +42,10 @@ public class FruitServiceImpl implements FruitService {
         String newName = updateFruitDTO.name();
         int newWeight = updateFruitDTO.weightInKilos();
 
-        Fruit updatedFruit = new Fruit(
-                existentFruit.getId(),
-                newName,
-                newWeight);
+        existentFruit.setName(newName);
+        existentFruit.setWeightInKilos(newWeight);
 
-        return FruitMapper.toFruitDTO(fruitRepository.save(updatedFruit));
+        return FruitMapper.toFruitDTO(fruitRepository.save(existentFruit));
     }
 
     @Override
