@@ -2,10 +2,12 @@ package cat.itacademy.s04.t02.n01.fruitapih2.controllers;
 
 import cat.itacademy.s04.t02.n01.fruitapih2.DTOs.CreateFruitDTO;
 import cat.itacademy.s04.t02.n01.fruitapih2.DTOs.ResponseFruitDTO;
+import cat.itacademy.s04.t02.n01.fruitapih2.exception.ResourceNotFoundException;
 import cat.itacademy.s04.t02.n01.fruitapih2.services.FruitService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
@@ -108,14 +110,47 @@ class FruitControllerTest {
     }
 
     @Test
-    void getAllFruits_whenThereAreNoFruits_shouldReturn404andTheEmptyList() throws Exception {
+    void getAllFruits_whenThereAreNoFruits_shouldReturn204TheEmptyList() throws Exception {
 
         when(fruitService.getAllFruits()).thenReturn(List.of());
 
         // ACT + ASSERT
         mockMvc.perform(get("/fruits"))
-                .andExpect(status().isOk())
+                .andExpect(status().isNoContent())
                 .andExpect(jsonPath("$").isArray())
                 .andExpect(jsonPath("$.length()").value(0));
+    }
+
+    @Test
+    void getFruitByID_whenFruitExists_shouldReturn200andTheFruitRequested() throws Exception {
+
+        long id = 1L;
+        ResponseFruitDTO output = new ResponseFruitDTO(id, "Apple", 2);
+
+        when(fruitService.getFruitById(id)).thenReturn(output);
+
+        mockMvc.perform(get("/fruits/{id}", id))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").value(output.id()))
+                .andExpect(jsonPath("$.name").value(output.name()))
+                .andExpect(jsonPath("$.weightInKilos").value(output.weightInKilos()));
+
+        verify(fruitService).getFruitById(id);
+    }
+
+    @Test
+    void getFruitByID_whenFruitDoesNotExists_shouldReturn404() throws Exception {
+        long id = 1L;
+
+        when(fruitService.getFruitById(id))
+                .thenThrow(new ResourceNotFoundException("Fruit not found with id: " +id));
+
+        mockMvc.perform(get("/fruits/{id}", id))
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$.status").value(HttpStatus.NOT_FOUND.value()))
+                .andExpect(jsonPath("$.message").value("Fruit not found with id: " +id))
+                .andExpect(jsonPath("$.errors").doesNotExist());
+
+        verify(fruitService).getFruitById(id);
     }
 }
