@@ -3,6 +3,7 @@ package cat.itacademy.s04.t02.n01.fruitapih2.services;
 import cat.itacademy.s04.t02.n01.fruitapih2.DTOs.CreateFruitDTO;
 import cat.itacademy.s04.t02.n01.fruitapih2.DTOs.ResponseFruitDTO;
 import cat.itacademy.s04.t02.n01.fruitapih2.DTOs.UpdateFruitDTO;
+import cat.itacademy.s04.t02.n01.fruitapih2.exception.ResourceNotFoundException;
 import cat.itacademy.s04.t02.n01.fruitapih2.model.Fruit;
 import cat.itacademy.s04.t02.n01.fruitapih2.repository.FruitRepository;
 import cat.itacademy.s04.t02.n01.fruitapih2.utils.FruitMapper;
@@ -52,6 +53,8 @@ public class FruitServiceImpl implements FruitService {
 
     @Override
     public ResponseFruitDTO getFruitById(Long id) {
-        return null;
+        return fruitRepository.findById(id)
+                .map(FruitMapper::toFruitDTO)
+                .orElseThrow(() -> new ResourceNotFoundException("Fruit not found with id: " +id));
     }
 }
