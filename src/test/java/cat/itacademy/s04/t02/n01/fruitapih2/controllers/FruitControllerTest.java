@@ -1,6 +1,6 @@
 package cat.itacademy.s04.t02.n01.fruitapih2.controllers;
 
-import cat.itacademy.s04.t02.n01.fruitapih2.DTOs.CreateFruitDTO;
+import cat.itacademy.s04.t02.n01.fruitapih2.DTOs.RequestFruitDTO;
 import cat.itacademy.s04.t02.n01.fruitapih2.DTOs.ResponseFruitDTO;
 import cat.itacademy.s04.t02.n01.fruitapih2.exception.ResourceNotFoundException;
 import cat.itacademy.s04.t02.n01.fruitapih2.services.FruitService;

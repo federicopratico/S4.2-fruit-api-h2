@@ -1,8 +1,7 @@
 package cat.itacademy.s04.t02.n01.fruitapih2.services;
 
-import cat.itacademy.s04.t02.n01.fruitapih2.DTOs.CreateFruitDTO;
+import cat.itacademy.s04.t02.n01.fruitapih2.DTOs.RequestFruitDTO;
 import cat.itacademy.s04.t02.n01.fruitapih2.DTOs.ResponseFruitDTO;
-import cat.itacademy.s04.t02.n01.fruitapih2.DTOs.UpdateFruitDTO;
 import cat.itacademy.s04.t02.n01.fruitapih2.exception.ResourceNotFoundException;
 import cat.itacademy.s04.t02.n01.fruitapih2.model.Fruit;
 import cat.itacademy.s04.t02.n01.fruitapih2.repository.FruitRepository;
@@ -22,7 +21,7 @@ public class FruitServiceImpl implements FruitService {
 
 
     @Override
-    public ResponseFruitDTO createFruit(CreateFruitDTO createFruitDTO) {
+    public ResponseFruitDTO createFruit(RequestFruitDTO createFruitDTO) {
 
         Fruit newFruit = new Fruit();
         newFruit.setName(createFruitDTO.name());
@@ -34,7 +33,7 @@ public class FruitServiceImpl implements FruitService {
     }
 
     @Override
-    public ResponseFruitDTO updateFruit(UpdateFruitDTO updateFruitDTO) {
+    public ResponseFruitDTO updateFruit(long id, RequestFruitDTO updateFruitDTO) {
         return null;
     }
 
