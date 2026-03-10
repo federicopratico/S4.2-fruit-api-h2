@@ -46,8 +46,12 @@ public class FruitController {
     }
 
     @GetMapping("/{id}")
-    public ResponseFruitDTO getFruitById(@PathVariable long id) {
-        return null;
+    public ResponseEntity<ResponseFruitDTO> getFruitById(@PathVariable long id) {
+        ResponseFruitDTO response = fruitService.getFruitById(id);
+
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(response);
     }
 
     @PutMapping("/{id}")
