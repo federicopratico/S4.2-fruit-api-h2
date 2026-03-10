@@ -31,7 +31,10 @@ public class FruitController {
     }
 
     @DeleteMapping("/{id}")
-    public void deleteFruit(@PathVariable long id) {
+    public ResponseEntity<Void> deleteFruit(@PathVariable long id) {
+        fruitService.deleteFruit(id);
+
+        return ResponseEntity.noContent().build();
     }
 
     @GetMapping()
