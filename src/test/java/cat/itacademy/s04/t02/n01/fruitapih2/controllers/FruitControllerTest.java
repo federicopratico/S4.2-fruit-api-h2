@@ -17,8 +17,7 @@ import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -140,6 +139,7 @@ class FruitControllerTest {
 
     @Test
     void getFruitByID_whenFruitDoesNotExists_shouldReturn404() throws Exception {
+
         long id = 1L;
 
         when(fruitService.getFruitById(id))
@@ -152,5 +152,44 @@ class FruitControllerTest {
                 .andExpect(jsonPath("$.errors").doesNotExist());
 
         verify(fruitService).getFruitById(id);
+    }
+
+    @Test
+    void updateFruit_whenFruitExists_shouldReturn200andTheUpdatedFruit() throws Exception {
+
+        long id = 1L;
+        RequestFruitDTO input =  new RequestFruitDTO("New Fruit", 10);
+        ResponseFruitDTO output = new ResponseFruitDTO(id, "New Fruit", 10);
+
+        when(fruitService.updateFruit(id, input)).thenReturn(output);
+
+        String jsonBody = objectMapper.writeValueAsString(input);
+
+        mockMvc.perform(put("/fruits/{id}", id)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(jsonBody))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").value(output.id()))
+                .andExpect(jsonPath("$.name").value(output.name()))
+                .andExpect(jsonPath("$.weightInKilos").value(output.weightInKilos()));
+
+        verify(fruitService).updateFruit(id, input);
+    }
+
+    @Test
+    void updateFruit_whenFruitDoesNotExist_shouldReturn404() throws Exception {
+
+        long id = 1L;
+
+        when(fruitService.updateFruit(id, any(RequestFruitDTO.class)))
+                .thenThrow(new ResourceNotFoundException("Fruit to update not found with id: " + id));
+
+        mockMvc.perform(put("/fruits/{id}", id))
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$.status").value(HttpStatus.NOT_FOUND.value()))
+                .andExpect(jsonPath("$.message").value("Fruit to update not found with id: " +id))
+                .andExpect(jsonPath("$.errors").doesNotExist());
+
+        verify(fruitService).updateFruit(id, any(RequestFruitDTO.class));
     }
 }
