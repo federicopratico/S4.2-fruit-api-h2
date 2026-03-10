@@ -89,7 +89,7 @@ class FruitServiceImplTest {
 
     @Test
     void getFruitById_whenIdExists_shouldReturnTheFruit() {
-        Long id = 1L;
+        long id = 1L;
         Optional<Fruit> output = Optional.of(new Fruit(id, "Apple", 1));
 
         when(fruitRepository.findById(id)).thenReturn(output);
@@ -105,8 +105,8 @@ class FruitServiceImplTest {
     }
 
     @Test
-    void getFruitById_whenIdDoesNotExists_shouldThrowFruitNotFoundException() {
-        Long id = 1L;
+    void getFruitById_whenIdDoesNotExists_shouldThrowResourceNotFoundException() {
+        long id = 1L;
         when(fruitRepository.findById(1L)).thenReturn(Optional.empty());
 
         assertThrows(ResourceNotFoundException.class, () -> fruitService.getFruitById(id));
