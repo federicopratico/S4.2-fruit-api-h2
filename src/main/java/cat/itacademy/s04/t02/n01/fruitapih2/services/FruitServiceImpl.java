@@ -9,6 +9,7 @@ import cat.itacademy.s04.t02.n01.fruitapih2.utils.FruitMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class FruitServiceImpl implements FruitService {
@@ -34,7 +35,19 @@ public class FruitServiceImpl implements FruitService {
 
     @Override
     public ResponseFruitDTO updateFruit(long id, RequestFruitDTO updateFruitDTO) {
-        return null;
+
+        Fruit existentFruit = fruitRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Fruit to update not found with id: " +id));
+
+        String newName = updateFruitDTO.name();
+        int newWeight = updateFruitDTO.weightInKilos();
+
+        Fruit updatedFruit = new Fruit(
+                existentFruit.getId(),
+                newName,
+                newWeight);
+
+        return FruitMapper.toFruitDTO(fruitRepository.save(updatedFruit));
     }
 
     @Override
