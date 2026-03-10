@@ -52,7 +52,7 @@ class FruitControllerTest {
     }
 
     @Test
-    void addFruit_invalidName_shouldThrowInvalidInputException() throws Exception {
+    void addFruit_invalidName_shouldReturn400ThrownMethodArgumentNotValidException() throws Exception {
 
         RequestFruitDTO invalidInput = new RequestFruitDTO(" ", 4);
         String jsonBody = objectMapper.writeValueAsString(invalidInput);
@@ -70,7 +70,7 @@ class FruitControllerTest {
     }
 
     @Test
-    void addFruit_invalidWeight_shouldThrowInvalidInputException() throws Exception {
+    void addFruit_invalidWeight_shouldReturn400ThrownMethodArgumentNotValidException() throws Exception {
 
         RequestFruitDTO invalidInput = new RequestFruitDTO("Apple", -3);
         String jsonBody = objectMapper.writeValueAsString(invalidInput);
@@ -161,7 +161,7 @@ class FruitControllerTest {
         RequestFruitDTO input =  new RequestFruitDTO("New Fruit", 10);
         ResponseFruitDTO output = new ResponseFruitDTO(id, "New Fruit", 10);
 
-        when(fruitService.updateFruit(id, input)).thenReturn(output);
+        when(fruitService.updateFruit(eq(id), any(RequestFruitDTO.class))).thenReturn(output);
 
         String jsonBody = objectMapper.writeValueAsString(input);
 
@@ -173,23 +173,68 @@ class FruitControllerTest {
                 .andExpect(jsonPath("$.name").value(output.name()))
                 .andExpect(jsonPath("$.weightInKilos").value(output.weightInKilos()));
 
-        verify(fruitService).updateFruit(id, input);
+        verify(fruitService).updateFruit(eq(id), any(RequestFruitDTO.class));
     }
 
     @Test
     void updateFruit_whenFruitDoesNotExist_shouldReturn404() throws Exception {
 
         long id = 1L;
+        RequestFruitDTO input =  new RequestFruitDTO("New Fruit", 10);
 
-        when(fruitService.updateFruit(id, any(RequestFruitDTO.class)))
+        when(fruitService.updateFruit(eq(id), any(RequestFruitDTO.class)))
                 .thenThrow(new ResourceNotFoundException("Fruit to update not found with id: " + id));
 
-        mockMvc.perform(put("/fruits/{id}", id))
+        String jsonBody = objectMapper.writeValueAsString(input);
+
+        mockMvc.perform(put("/fruits/{id}", id)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(jsonBody))
                 .andExpect(status().isNotFound())
                 .andExpect(jsonPath("$.status").value(HttpStatus.NOT_FOUND.value()))
                 .andExpect(jsonPath("$.message").value("Fruit to update not found with id: " +id))
                 .andExpect(jsonPath("$.errors").doesNotExist());
 
-        verify(fruitService).updateFruit(id, any(RequestFruitDTO.class));
+        verify(fruitService).updateFruit(eq(id), any(RequestFruitDTO.class));
+    }
+
+    @Test
+    void updateFruit_invalidFruitName_shouldReturn400ThrownMethodArgumentNotValidException() throws Exception {
+
+        long id = 1L;
+        RequestFruitDTO invalidInput = new RequestFruitDTO(" ", 3);
+
+        String jsonBody = objectMapper.writeValueAsString(invalidInput);
+
+        mockMvc.perform(put("/fruits/{id}", id)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(jsonBody))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.status").value(400))
+                .andExpect(jsonPath("$.message").value("Validation failed"))
+                .andExpect(jsonPath("$.errors.name").value("Provide a name for the new fruit"));
+
+
+        verify(fruitService, never()).updateFruit(eq(id), any(RequestFruitDTO.class));
+    }
+
+    @Test
+    void updateFruit_invalidInput_shouldReturn400ThrownMethodArgumentNotValidException() throws Exception {
+
+        long id = 1L;
+        RequestFruitDTO invalidInput = new RequestFruitDTO("Apple", -50);
+
+        String jsonBody = objectMapper.writeValueAsString(invalidInput);
+
+        mockMvc.perform(put("/fruits/{id}", id)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(jsonBody))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.status").value(400))
+                .andExpect(jsonPath("$.message").value("Validation failed"))
+                .andExpect(jsonPath("$.errors.weightInKilos").value("Weight must be positive"));
+
+
+        verify(fruitService, never()).updateFruit(eq(id), any(RequestFruitDTO.class));
     }
 }
