@@ -219,7 +219,7 @@ class FruitControllerTest {
     }
 
     @Test
-    void updateFruit_invalidInput_shouldReturn400ThrownMethodArgumentNotValidException() throws Exception {
+    void updateFruit_invalidInput_shouldReturn400AndThrownMethodArgumentNotValidException() throws Exception {
 
         long id = 1L;
         RequestFruitDTO invalidInput = new RequestFruitDTO("Apple", -50);
@@ -236,5 +236,33 @@ class FruitControllerTest {
 
 
         verify(fruitService, never()).updateFruit(eq(id), any(RequestFruitDTO.class));
+    }
+
+    @Test
+    void deleteFruit_whenFruitExists_shouldReturn204andDeleteFruitSuccessfully() throws Exception {
+        long id = 1L;
+
+        doNothing().when(fruitService).deleteFruit(id);
+
+        mockMvc.perform(delete("/fruits/{id}", id))
+                .andExpect(status().isNoContent());
+
+        verify(fruitService).deleteFruit(id);
+    }
+
+    @Test
+    void deleteFruit_whenFruitDoesNotExist_shouldReturn404ThrowResourceNotFoundException() throws Exception {
+        long id = 1L;
+
+        doThrow(new ResourceNotFoundException("Fruit to delete not found with id: " + id))
+                .when(fruitService).deleteFruit(id);
+
+        mockMvc.perform(delete("/fruits/{id}", id))
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$.status").value(HttpStatus.NOT_FOUND.value()))
+                .andExpect(jsonPath("$.message").value("Fruit to delete not found with id: " + id))
+                .andExpect(jsonPath("$.errors").doesNotExist());
+
+        verify(fruitService).deleteFruit(id);
     }
 }
