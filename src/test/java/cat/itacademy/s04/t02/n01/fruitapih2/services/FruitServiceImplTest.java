@@ -146,4 +146,29 @@ class FruitServiceImplTest {
         verify(fruitRepository).findById(id);
         verify(fruitRepository, never()).save(any(Fruit.class));
     }
+
+    @Test
+    void deleteFruit_whenIdExists_shouldDeleteFruitSuccessfully() {
+        long id = 1L;
+        Fruit existingFruit = new Fruit(id, "Apple", 2);
+
+        when(fruitRepository.findById(id)).thenReturn(Optional.of(existingFruit));
+
+        fruitService.deleteFruit(id);
+
+        verify(fruitRepository).findById(id);
+        verify(fruitRepository).delete(existingFruit);
+    }
+
+    @Test
+    void deleteFruit_whenIdDoesNotExist_shouldThrowResourceNotFoundException() {
+        long id = 1L;
+
+        when(fruitRepository.findById(id)).thenReturn(Optional.empty());
+
+        assertThrows(ResourceNotFoundException.class, () -> fruitService.deleteFruit(id));
+
+        verify(fruitRepository).findById(id);
+        verify(fruitRepository, never()).delete(any(Fruit.class));
+    }
 }
