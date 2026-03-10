@@ -36,21 +36,24 @@ public class FruitServiceImpl implements FruitService {
     @Override
     public ResponseFruitDTO updateFruit(long id, RequestFruitDTO updateFruitDTO) {
 
-        Fruit existentFruit = fruitRepository.findById(id)
+        Fruit existingFruit = fruitRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Fruit to update not found with id: " +id));
 
         String newName = updateFruitDTO.name();
         int newWeight = updateFruitDTO.weightInKilos();
 
-        existentFruit.setName(newName);
-        existentFruit.setWeightInKilos(newWeight);
+        existingFruit.setName(newName);
+        existingFruit.setWeightInKilos(newWeight);
 
-        return FruitMapper.toFruitDTO(fruitRepository.save(existentFruit));
+        return FruitMapper.toFruitDTO(fruitRepository.save(existingFruit));
     }
 
     @Override
     public void deleteFruit(long id) {
+        Fruit existingFruit = fruitRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Fruit to delete not found with id: " +id));
 
+        fruitRepository.delete(existingFruit);
     }
 
     @Override
