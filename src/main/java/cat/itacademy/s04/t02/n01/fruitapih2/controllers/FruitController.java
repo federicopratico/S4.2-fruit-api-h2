@@ -21,7 +21,7 @@ public class FruitController {
     }
 
     @PostMapping()
-    public ResponseEntity<ResponseFruitDTO> addFruit(@Validated @RequestBody RequestFruitDTO createFruitDTO) {
+    public ResponseEntity<ResponseFruitDTO> createFruit(@Validated @RequestBody RequestFruitDTO createFruitDTO) {
 
         ResponseFruitDTO response = fruitService.createFruit(createFruitDTO);
 
