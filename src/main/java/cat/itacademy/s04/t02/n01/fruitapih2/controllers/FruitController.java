@@ -3,9 +3,9 @@ package cat.itacademy.s04.t02.n01.fruitapih2.controllers;
 import cat.itacademy.s04.t02.n01.fruitapih2.DTOs.RequestFruitDTO;
 import cat.itacademy.s04.t02.n01.fruitapih2.DTOs.ResponseFruitDTO;
 import cat.itacademy.s04.t02.n01.fruitapih2.services.FruitService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,7 +21,7 @@ public class FruitController {
     }
 
     @PostMapping()
-    public ResponseEntity<ResponseFruitDTO> createFruit(@Validated @RequestBody RequestFruitDTO createFruitDTO) {
+    public ResponseEntity<ResponseFruitDTO> createFruit(@Valid @RequestBody RequestFruitDTO createFruitDTO) {
 
         ResponseFruitDTO response = fruitService.createFruit(createFruitDTO);
 
@@ -57,7 +57,7 @@ public class FruitController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ResponseFruitDTO> updateFruit(@PathVariable long id, @Validated @RequestBody RequestFruitDTO updateFruitDTO) {
+    public ResponseEntity<ResponseFruitDTO> updateFruit(@PathVariable long id, @Valid @RequestBody RequestFruitDTO updateFruitDTO) {
         ResponseFruitDTO response = fruitService.updateFruit(id, updateFruitDTO);
 
         return ResponseEntity
