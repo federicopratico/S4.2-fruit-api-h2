@@ -34,7 +34,7 @@ class FruitControllerTest {
     private FruitService fruitService;
 
     @Test
-    void  addFruit_validInput_shouldReturnCreatedFruitAnd201() throws Exception {
+    void  createFruit_validInput_shouldReturnCreatedFruitAnd201() throws Exception {
         ResponseFruitDTO response = new ResponseFruitDTO(1L, "Watermelon", 4);
 
         when(fruitService.createFruit(any(RequestFruitDTO.class)))
@@ -52,7 +52,7 @@ class FruitControllerTest {
     }
 
     @Test
-    void addFruit_invalidName_shouldReturn400ThrownMethodArgumentNotValidException() throws Exception {
+    void createFruit_invalidName_shouldReturn400ThrownMethodArgumentNotValidException() throws Exception {
 
         RequestFruitDTO invalidInput = new RequestFruitDTO(" ", 4);
         String jsonBody = objectMapper.writeValueAsString(invalidInput);
@@ -70,7 +70,7 @@ class FruitControllerTest {
     }
 
     @Test
-    void addFruit_invalidWeight_shouldReturn400ThrownMethodArgumentNotValidException() throws Exception {
+    void createFruit_invalidWeight_shouldReturn400ThrownMethodArgumentNotValidException() throws Exception {
 
         RequestFruitDTO invalidInput = new RequestFruitDTO("Apple", -3);
         String jsonBody = objectMapper.writeValueAsString(invalidInput);
