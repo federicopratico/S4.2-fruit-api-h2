@@ -5,7 +5,7 @@ import cat.itacademy.s04.t02.n01.fruitapih2.dtos.ResponseFruitDTO;
 import cat.itacademy.s04.t02.n01.fruitapih2.exception.ResourceNotFoundException;
 import cat.itacademy.s04.t02.n01.fruitapih2.model.Fruit;
 import cat.itacademy.s04.t02.n01.fruitapih2.repository.FruitRepository;
-import cat.itacademy.s04.t02.n01.fruitapih2.utils.FruitMapper;
+import cat.itacademy.s04.t02.n01.fruitapih2.mappers.FruitMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

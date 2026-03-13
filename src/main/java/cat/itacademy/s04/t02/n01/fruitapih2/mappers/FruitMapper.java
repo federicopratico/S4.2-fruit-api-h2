@@ -1,4 +1,4 @@
-package cat.itacademy.s04.t02.n01.fruitapih2.utils;
+package cat.itacademy.s04.t02.n01.fruitapih2.mappers;
 
 import cat.itacademy.s04.t02.n01.fruitapih2.dtos.ResponseFruitDTO;
 import cat.itacademy.s04.t02.n01.fruitapih2.model.Fruit;
