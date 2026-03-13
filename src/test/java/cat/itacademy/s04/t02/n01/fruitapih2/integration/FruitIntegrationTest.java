@@ -1,6 +1,6 @@
 package cat.itacademy.s04.t02.n01.fruitapih2.integration;
 
-import cat.itacademy.s04.t02.n01.fruitapih2.DTOs.RequestFruitDTO;
+import cat.itacademy.s04.t02.n01.fruitapih2.dtos.RequestFruitDTO;
 import cat.itacademy.s04.t02.n01.fruitapih2.model.Fruit;
 import cat.itacademy.s04.t02.n01.fruitapih2.repository.FruitRepository;
 import org.junit.jupiter.api.BeforeEach;

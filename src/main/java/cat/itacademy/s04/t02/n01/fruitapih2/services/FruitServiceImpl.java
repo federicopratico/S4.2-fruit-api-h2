@@ -1,7 +1,7 @@
 package cat.itacademy.s04.t02.n01.fruitapih2.services;
 
-import cat.itacademy.s04.t02.n01.fruitapih2.DTOs.RequestFruitDTO;
-import cat.itacademy.s04.t02.n01.fruitapih2.DTOs.ResponseFruitDTO;
+import cat.itacademy.s04.t02.n01.fruitapih2.dtos.RequestFruitDTO;
+import cat.itacademy.s04.t02.n01.fruitapih2.dtos.ResponseFruitDTO;
 import cat.itacademy.s04.t02.n01.fruitapih2.exception.ResourceNotFoundException;
 import cat.itacademy.s04.t02.n01.fruitapih2.model.Fruit;
 import cat.itacademy.s04.t02.n01.fruitapih2.repository.FruitRepository;
@@ -9,7 +9,6 @@ import cat.itacademy.s04.t02.n01.fruitapih2.utils.FruitMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class FruitServiceImpl implements FruitService {
